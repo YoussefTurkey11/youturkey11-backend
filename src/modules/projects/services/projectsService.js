@@ -37,13 +37,13 @@ export const getAllProjects = async ({
   };
 };
 
-// ============ Get Project By ID ============
-export const getProjectById = async (id) => {
-  const project = await Project.findById(id);
+// ============ Get Project By Slug ============
+export const getProjectBySlug = async (slug) => {
+  const project = await Project.findOne({ slug });
 
   if (!project) {
     throw new ApiError(
-      `No project found with id: ${id}`,
+      `No project found with slug: ${slug}`,
       StatusCodes.NOT_FOUND,
     );
   }
@@ -52,16 +52,16 @@ export const getProjectById = async (id) => {
 };
 
 // ============ Update Project ============
-export const updateProject = async (id, body) => {
-  const project = await Project.findByIdAndUpdate(
-    id,
+export const updateProject = async (slug, body) => {
+  const project = await Project.findOneAndUpdate(
+    { slug },
     { ...body },
     { new: true, runValidators: true },
   );
 
   if (!project) {
     throw new ApiError(
-      `No project found with id: ${id}`,
+      `No project found with slug: ${slug}`,
       StatusCodes.NOT_FOUND,
     );
   }
@@ -70,12 +70,12 @@ export const updateProject = async (id, body) => {
 };
 
 // ============ Delete Project ============
-export const deleteProject = async (id) => {
-  const project = await Project.findByIdAndDelete(id);
+export const deleteProject = async (slug) => {
+  const project = await Project.findOneAndDelete({ slug });
 
   if (!project) {
     throw new ApiError(
-      `No project found with id: ${id}`,
+      `No project found with slug: ${slug}`,
       StatusCodes.NOT_FOUND,
     );
   }
@@ -84,12 +84,12 @@ export const deleteProject = async (id) => {
 };
 
 // ============ Toggle Featured ============
-export const toggleFeatured = async (id) => {
-  const project = await Project.findById(id);
+export const toggleFeatured = async (slug) => {
+  const project = await Project.findOne({ slug });
 
   if (!project) {
     throw new ApiError(
-      `No project found with id: ${id}`,
+      `No project found with slug: ${slug}`,
       StatusCodes.NOT_FOUND,
     );
   }

@@ -3,10 +3,10 @@ import { protect, authorize } from "../../../middleware/authMiddleware.js";
 import {
   createProject,
   getAllProjects,
+  getProjectBySlug,
   updateProject,
   deleteProject,
   toggleFeatured,
-  getProjectById,
 } from "../controllers/projectsController.js";
 import {
   createProjectValidator,
@@ -54,13 +54,13 @@ router.get("/", getAllProjects);
 
 /**
  * @swagger
- * /api/v1/projects/id:
+ * /api/v1/projects/{slug}:
  *   get:
- *     summary: Get project by id
+ *     summary: Get project by slug
  *     tags: [Projects]
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: slug
  *         required: true
  *         schema:
  *           type: string
@@ -70,7 +70,7 @@ router.get("/", getAllProjects);
  *       404:
  *         description: Project not found
  */
-router.get("/:id", getProjectById);
+router.get("/:slug", getProjectBySlug);
 
 /**
  * @swagger
@@ -94,7 +94,7 @@ router.post(
 
 /**
  * @swagger
- * /api/v1/projects/{id}:
+ * /api/v1/projects/{slug}:
  *   patch:
  *     summary: Update project (Admin only)
  *     tags: [Projects]
@@ -102,7 +102,7 @@ router.post(
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: slug
  *         required: true
  *         schema:
  *           type: string
@@ -111,7 +111,7 @@ router.post(
  *         description: Project updated successfully
  */
 router.patch(
-  "/:id",
+  "/:slug",
   protect,
   authorize("admin"),
   updateProjectValidator,
@@ -120,7 +120,7 @@ router.patch(
 
 /**
  * @swagger
- * /api/v1/projects/{id}:
+ * /api/v1/projects/{slug}:
  *   delete:
  *     summary: Delete project (Admin only)
  *     tags: [Projects]
@@ -128,7 +128,7 @@ router.patch(
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: slug
  *         required: true
  *         schema:
  *           type: string
@@ -136,11 +136,11 @@ router.patch(
  *       200:
  *         description: Project deleted successfully
  */
-router.delete("/:id", protect, authorize("admin"), deleteProject);
+router.delete("/:slug", protect, authorize("admin"), deleteProject);
 
 /**
  * @swagger
- * /api/v1/projects/{id}/toggle-featured:
+ * /api/v1/projects/{slug}/toggle-featured:
  *   patch:
  *     summary: Toggle project featured status (Admin only)
  *     tags: [Projects]
@@ -148,7 +148,7 @@ router.delete("/:id", protect, authorize("admin"), deleteProject);
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: slug
  *         required: true
  *         schema:
  *           type: string
@@ -157,7 +157,7 @@ router.delete("/:id", protect, authorize("admin"), deleteProject);
  *         description: Featured status toggled
  */
 router.patch(
-  "/:id/toggle-featured",
+  "/:slug/toggle-featured",
   protect,
   authorize("admin"),
   toggleFeatured,

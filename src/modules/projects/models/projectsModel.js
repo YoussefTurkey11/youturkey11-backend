@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import slugify from "slugify";
 
 const projectSchema = new mongoose.Schema(
   {
@@ -57,6 +58,15 @@ const projectSchema = new mongoose.Schema(
   },
   { timestamps: true },
 );
+
+projectSchema.pre("save", async function () {
+  if (this.isModified("title")) {
+    this.slug = slugify(this.title, {
+      lower: true,
+      strict: true,
+    });
+  }
+});
 
 const Project = mongoose.model("Project", projectSchema);
 

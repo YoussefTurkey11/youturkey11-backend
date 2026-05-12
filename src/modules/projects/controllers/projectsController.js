@@ -26,20 +26,20 @@ export const getAllProjects = asyncHandler(async (req, res) => {
   res.status(StatusCodes.OK).json(result);
 });
 
-// ============ Get Project By id ============
-export const getProjectById = asyncHandler(async (req, res) => {
-  const { id } = req.params;
+// ============ Get Project By Slug ============
+export const getProjectBySlug = asyncHandler(async (req, res) => {
+  const { slug } = req.params;
 
-  const project = await projectService.getProjectById(id);
+  const project = await projectService.getProjectBySlug(slug);
 
   res.status(StatusCodes.OK).json({ data: project });
 });
 
 // ============ Update Project ============
 export const updateProject = asyncHandler(async (req, res) => {
-  const { id } = req.params;
+  const { slug } = req.params;
 
-  const project = await projectService.updateProject(id, req.body);
+  const project = await projectService.updateProject(slug, req.body);
 
   res.status(StatusCodes.OK).json({
     message: "Project updated successfully",
@@ -49,18 +49,18 @@ export const updateProject = asyncHandler(async (req, res) => {
 
 // ============ Delete Project ============
 export const deleteProject = asyncHandler(async (req, res) => {
-  const { id } = req.params;
+  const { slug } = req.params;
 
-  await projectService.deleteProject(id);
+  await projectService.deleteProject(slug);
 
   res.status(StatusCodes.OK).json({ message: "Project deleted successfully" });
 });
 
 // ============ Toggle Featured ============
 export const toggleFeatured = asyncHandler(async (req, res) => {
-  const { id } = req.params;
+  const { slug } = req.params;
 
-  const project = await projectService.toggleFeatured(id);
+  const project = await projectService.toggleFeatured(slug);
 
   res.status(StatusCodes.OK).json({
     message: `Project is now ${project.featured ? "featured" : "unfeatured"}`,
